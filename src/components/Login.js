@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { useNavigate } from 'react-router-dom';
 import '../css/Login.css'
 import { userLogin } from '../services/UserService';
 import { encryptStorage1 } from '../utility/Storage';
+import { UserContext } from '../context/Context';
 
 const Login = () => {
 
+    const {userName,setUserName}=useContext(UserContext)
+    console.log(userName);
     const navigate = useNavigate()
     const [data] = useState({
 
@@ -31,21 +34,27 @@ const Login = () => {
     });
 
 
-    const handleSubmitForm =async (values) => {
+    const handleSubmitForm = async (values) => {
         const { email, password } = values
-        
+
         const loginData = {
             "email": email,
             "password": password
         }
-    
-        let res=await userLogin(loginData)
+
+        let res = await userLogin(loginData)
         console.log(res);
-        let token=(res?.data?.token);
-        encryptStorage1.setItem('token',token)
-        navigate('/dashboard')
+        if (res.status === 201) {
+            let token = (res?.data?.token);
+            let userData=(res?.data?.user);
+            const {name,middlename,surname}=userData
+            encryptStorage1.setItem('token', token)
+            setUserName(`${name} ${middlename} ${surname}`)
+            encryptStorage1.setItem('userData', userData)
+            navigate('/dashboard')
+        };
     }
-        
+    
 
     return (
         <>
