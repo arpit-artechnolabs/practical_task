@@ -6,6 +6,7 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import * as Yup from "yup";
 import { Formik } from 'formik';
 import '../css/RegistrationForm.css'
+import { Link } from 'react-router-dom';
 
 const RegistrationForm = () => {
 
@@ -25,7 +26,7 @@ const RegistrationForm = () => {
         "city": "",
         "zipcode": "",
         "mobile": "",
-        "birthDate": "",
+        // "birthDate": "",
         "gender": "",
         "hobby": []
     })
@@ -79,8 +80,8 @@ const RegistrationForm = () => {
             .required('This is required field*'),
         zipcode: Yup.string()
             .required('This is required field*'),
-        date: Yup.string()
-            .required('This is required field*'),
+        // birthDate: Yup.string()
+        //     .required('This is required field*'),
         gender: Yup.string()
             .required('This is required field*'),
         sex: Yup.string()
@@ -90,16 +91,17 @@ const RegistrationForm = () => {
     })
 
 
-    // const [birthDate, setBirthDate] = useState(null)
+    const [birthDate, setBirthDate] = useState(null)
     const handleChange = (Date) => {
-        // setBirthDate(Date)
+        setBirthDate(Date)
         console.log(Date);
         console.log(Date.$D, Date.$M + 1, Date.$y);
     }
 
     const handleSubmitForm = (e,values) => {
-        // e.preventDefault()
-        console.log(values);
+        e.preventDefault()
+    
+        // console.log(values);
         console.log('ok')
     }
     return (
@@ -114,7 +116,7 @@ const RegistrationForm = () => {
 
                 {(props) => (
                     <>
-                        {console.log(props)}
+                        {/* {console.log(props)} */}
                         <div className='container my-4'>
                             <h4 className='d-flex justify-content-center text-primary'>Registation Form</h4>
                             <form onSubmit={props.handleSubmit}>
@@ -354,9 +356,9 @@ const RegistrationForm = () => {
                                     <DemoContainer components={['DatePicker']}>
                                         <DatePicker
                                             label="Select Date of birth"
-                                            value={props.values.birthDate}
+                                            value={birthDate}
                                             onChange={handleChange}
-                                            onBlur={props.handleBlur}
+                                            // onBlur={props.handleBlur}
                                             name="birthDate"
                                         />
                                         <span className='error_message'> {props.touched.birthDate && props.errors.birthDate ? (
@@ -454,6 +456,7 @@ const RegistrationForm = () => {
                                 <button type="submit" className="btn btn-primary">Submit</button>
 
                             </form>
+                            <div className='my-2'>Already have an account ? <Link to='/login'> Login Here </Link></div>
                         </div>
                     </>
                 )}

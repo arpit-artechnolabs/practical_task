@@ -1,10 +1,11 @@
-import RegistrationForm from './components/RegistrationForm';
+import MainRoute from './components/MainRoute';
+// import RegistrationForm from './components/RegistrationForm';
 import './css/App.css';
 
 function App() {
   return (
     <>
-     <RegistrationForm/>
+     <MainRoute/>
     </>
   );
 }
