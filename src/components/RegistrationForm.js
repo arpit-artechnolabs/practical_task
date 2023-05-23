@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -9,6 +9,7 @@ import '../css/RegistrationForm.css'
 
 const RegistrationForm = () => {
 
+    const passwordRef=useRef()
 
     const [userData, setUserData] = useState({
         "name": "",
@@ -26,7 +27,7 @@ const RegistrationForm = () => {
         "mobile": "",
         "birthDate": "",
         "gender": "",
-        "hobby": ""
+        "hobby": []
     })
 
     const phoneRegExp = (/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/);
@@ -34,22 +35,22 @@ const RegistrationForm = () => {
 
     const LoginSchema = Yup.object({
         name: Yup.string()
-            .max(15, 'Must be 15 characters or less')
+            .max(15, 'Must be 15 characters or less.')
             .matches(/^[A-Za-z ]*$/, 'Please enter valid name.')
             .required('This is required field*'),
         email: Yup.string()
             // .email('Invalid email address')
             // .matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please Enter Valid Email")
-            .matches(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/, 'Please Enter Valid Email')
+            .matches(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/, 'Please enter valid email.')
             .required('This is required field*'),
         password: Yup.string()
             .required('This is required field*')
             // eslint-disable-next-line no-useless-escape
             .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"),
+                "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character."),
         confirm_password: Yup.string()
             .required('This is required field*')
-            .oneOf([Yup.ref('password'), null], 'Passwords must match'),
+            .oneOf([Yup.ref('password'), null], 'Password and confirm password must match.'),
         middlename: Yup.string()
             .max(20, 'Must be 20 characters or less')
             .matches(/^[A-Za-z ]*$/, 'Please enter valid middle name.')
@@ -64,7 +65,7 @@ const RegistrationForm = () => {
             .required('This is required field*')
             .matches(phoneRegExp, "Please enter a valid phone number")
             .min(10, 'Too short, Please enter valid 10 digit mobile number.')
-            .max(10, 'Too Long, Please enter 10 digit mobile number.'),
+            .max(10, 'Too long, Please enter 10 digit mobile number.'),
 
         address_line1: Yup.string()
             .required('This is required field*'),
@@ -84,8 +85,8 @@ const RegistrationForm = () => {
             .required('This is required field*'),
         sex: Yup.string()
             .required('This is required field*'),
-        hobby: Yup.string()
-            .required('This is required field*'),
+        hobby: Yup.array()
+            .min(1, 'This is required field*'),
     })
 
 
@@ -96,8 +97,10 @@ const RegistrationForm = () => {
         console.log(Date.$D, Date.$M + 1, Date.$y);
     }
 
-    const handleSubmitForm = (values) => {
+    const handleSubmitForm = (e,values) => {
+        // e.preventDefault()
         console.log(values);
+        console.log('ok')
     }
     return (
         <>
@@ -114,13 +117,13 @@ const RegistrationForm = () => {
                         {console.log(props)}
                         <div className='container my-4'>
                             <h4 className='d-flex justify-content-center text-primary'>Registation Form</h4>
-                            <form>
+                            <form onSubmit={props.handleSubmit}>
 
-                                <div class="mb-3">
-                                    <label for="exampleInputName" class="form-label">Name</label>
+                                <div className="mb-3">
+                                    <label htmlFor="exampleInputName" className="form-label">Name</label>
                                     <input
                                         type="text"
-                                        class="form-control"
+                                        className="form-control"
                                         id="exampleInputName"
                                         aria-describedby="NameHelp"
                                         onChange={props.handleChange}
@@ -134,11 +137,11 @@ const RegistrationForm = () => {
                                     ) : null}</span>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="exampleInputEmail1" class="form-label">Email address</label>
+                                <div className="mb-3">
+                                    <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
                                     <input
                                         type="email"
-                                        class="form-control"
+                                        className="form-control"
                                         id="exampleInputEmail1"
                                         aria-describedby="emailHelp"
                                         onChange={props.handleChange}
@@ -146,37 +149,39 @@ const RegistrationForm = () => {
                                         value={props.values.email}
                                         name="email"
                                     />
-                                        <span className='error_message'> {props.touched.email && props.errors.email ? (
+                                    <span className='error_message'> {props.touched.email && props.errors.email ? (
                                         <div>{props.errors.email}</div>
                                     ) : null}</span>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                                    <input 
-                                    type="password" 
-                                    class="form-control" 
-                                    id="exampleInputPassword1" 
-                                    onChange={props.handleChange}
+                                <div className="mb-3">
+                                    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="exampleInputPassword1"
+                                        onChange={props.handleChange}
                                         onBlur={props.handleBlur}
                                         value={props.values.password}
                                         name="password"
+                                        ref={passwordRef}
                                     />
                                     <span className='error_message'> {props.touched.password && props.errors.password ? (
                                         <div>{props.errors.password}</div>
                                     ) : null}</span>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="exampleInputCPassword1" class="form-label">Confirm Password</label>
-                                    <input 
-                                    type="password" 
-                                    class="form-control"
-                                    id="exampleInputCPassword1"
-                                    onChange={props.handleChange}
+                                <div className="mb-3">
+                                    <label htmlFor="exampleInputCPassword1" className="form-label">Confirm Password</label>
+                                    <input
+                                        type="password"
+                                        className="form-control"
+                                        id="exampleInputCPassword1"
+                                        onChange={props.handleChange}
                                         onBlur={props.handleBlur}
                                         value={props.values.confirm_password}
                                         name="confirm_password"
+                                        ref={passwordRef}
                                     />
                                     <span className='error_message'> {props.touched.confirm_password && props.errors.confirm_password ? (
                                         <div>{props.errors.confirm_password}</div>
@@ -184,14 +189,14 @@ const RegistrationForm = () => {
                                 </div>
 
 
-                                <div class="mb-3">
-                                    <label for="exampleInputMiddleName" class="form-label">Middle Name</label>
-                                    <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="exampleInputMiddleName" 
-                                    aria-describedby="MiddleNameHelp" 
-                                    onChange={props.handleChange}
+                                <div className="mb-3">
+                                    <label htmlFor="exampleInputMiddleName" className="form-label">Middle Name</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="exampleInputMiddleName"
+                                        aria-describedby="MiddleNameHelp"
+                                        onChange={props.handleChange}
                                         onBlur={props.handleBlur}
                                         value={props.values.middlename}
                                         name="middlename"
@@ -201,31 +206,31 @@ const RegistrationForm = () => {
                                     ) : null}</span>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="exampleInputSurname" class="form-label">Surname</label>
-                                    <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="exampleInputSurname" 
-                                    aria-describedby="SurnameHelp" 
-                                    onChange={props.handleChange}
-                                    onBlur={props.handleBlur}
+                                <div className="mb-3">
+                                    <label htmlFor="exampleInputSurname" className="form-label">Surname</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="exampleInputSurname"
+                                        aria-describedby="SurnameHelp"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
                                         value={props.values.surname}
                                         name="surname"
                                     />
-                                    <span className='error_message'> {props.touched.surname && props.errors.confirm_password ? (
+                                    <span className='error_message'> {props.touched.surname && props.errors.surname ? (
                                         <div>{props.errors.surname}</div>
                                     ) : null}</span>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="inputAddress" class="form-label">Address Line 1</label>
-                                    <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="inputAddress" 
-                                    onChange={props.handleChange}
-                                    onBlur={props.handleBlur}
+                                <div className="mb-3">
+                                    <label htmlFor="inputAddress" className="form-label">Address Line 1</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="inputAddress"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
                                         value={props.values.address_line1}
                                         name="address_line1"
                                     />
@@ -233,33 +238,33 @@ const RegistrationForm = () => {
                                         <div>{props.errors.address_line1}</div>
                                     ) : null}</span>
                                 </div>
-                                <div class="mb-3">
-                                    <label for="inputAddress2" class="form-label">Address Line 2</label>
+                                <div className="mb-3">
+                                    <label htmlFor="inputAddress2" className="form-label">Address Line 2</label>
                                     <input
-                                     type="text" 
-                                     class="form-control" 
-                                     id="inputAddress2" 
-                                     onChange={props.handleChange}
-                                    onBlur={props.handleBlur}
+                                        type="text"
+                                        className="form-control"
+                                        id="inputAddress2"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
                                         value={props.values.address_line2}
                                         name="address_line2"
-                                     />
-                                      <span className='error_message'> {props.touched.address_line2 && props.errors.address_line2 ? (
+                                    />
+                                    <span className='error_message'> {props.touched.address_line2 && props.errors.address_line2 ? (
                                         <div>{props.errors.address_line2}</div>
                                     ) : null}</span>
                                 </div>
-                                
-                                <div class="col-md-6 my-3">
-                                    <label for="inputCountry" class="form-label">Country</label>
-        
-                                    <select id="inputCountry" 
-                                    class="form-select"
-                                    onChange={props.handleChange}
-                                    onBlur={props.handleBlur}
+
+                                <div className="col-md-6 my-3">
+                                    <label htmlFor="inputCountry" className="form-label">Country</label>
+
+                                    <select id="inputCountry"
+                                        className="form-select"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
                                         value={props.values.country}
                                         name="country"
                                     >
-                                        <option selected="-1">Choose a city</option>
+                                        <option defaultValue="-1">Choose a city</option>
                                         <option value='Surat'>Surat</option>
                                         <option value='Ahmedabad'>Ahmedabad</option>
                                         <option value='Vadodara'>Vadodara</option>
@@ -271,17 +276,17 @@ const RegistrationForm = () => {
                                 </div>
 
 
-                                <div class="col-md-6">
-                                    <label for="inputCity" class="form-label">City</label>
-        
-                                    <select id="inputCity" 
-                                    class="form-select"
-                                    onChange={props.handleChange}
-                                    onBlur={props.handleBlur}
+                                <div className="col-md-6">
+                                    <label htmlFor="inputCity" className="form-label">City</label>
+
+                                    <select id="inputCity"
+                                        className="form-select"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
                                         value={props.values.city}
                                         name="city"
                                     >
-                                        <option selected="-1">Choose a city</option>
+                                        <option defaultValue="-1">Choose a city</option>
                                         <option value='Surat'>Surat</option>
                                         <option value='Ahmedabad'>Ahmedabad</option>
                                         <option value='Vadodara'>Vadodara</option>
@@ -292,17 +297,17 @@ const RegistrationForm = () => {
                                     ) : null}</span>
                                 </div>
 
-                                <div class="col-md-4 my-3">
-                                    <label for="inputState" class="form-label">State</label>
-                                    <select 
-                                    id="inputState" 
-                                    class="form-select"
-                                    onChange={props.handleChange}
-                                    onBlur={props.handleBlur}
+                                <div className="col-md-4 my-3">
+                                    <label htmlFor="inputState" className="form-label">State</label>
+                                    <select
+                                        id="inputState"
+                                        className="form-select"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
                                         value={props.values.state}
                                         name="state"
-                                        >
-                                        <option selected="-1">Choose a city</option>
+                                    >
+                                        <option defaultValue="-1">Choose a city</option>
                                         <option value='Gujarat'>Gujarat</option>
                                         <option value='Maharshtra'>Maharshtra</option>
                                         <option value='Rajasthan'>Rajasthan</option>
@@ -312,14 +317,14 @@ const RegistrationForm = () => {
                                     ) : null}</span>
                                 </div>
 
-                                <div class="col-md-4 my-3">
-                                    <label for="inputZip" class="form-label">Zip</label>
-                                    <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="inputZip" 
-                                    onChange={props.handleChange}
-                                    onBlur={props.handleBlur}
+                                <div className="col-md-4 my-3">
+                                    <label htmlFor="inputZip" className="form-label">Zip</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="inputZip"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
                                         value={props.values.zipcode}
                                         name="zipcode"
                                     />
@@ -328,15 +333,15 @@ const RegistrationForm = () => {
                                     ) : null}</span>
                                 </div>
 
-                                <div class="mb-3 col-md-4">
-                                    <label for="exampleInputMobNumber" class="form-label">Mobile Number</label>
-                                    <input 
-                                    type="text" 
-                                    class="form-control" 
-                                    id="exampleInputMobNumber" 
-                                    aria-describedby="MobNumberHelp" 
-                                    onChange={props.handleChange}
-                                    onBlur={props.handleBlur}
+                                <div className="mb-3 col-md-4">
+                                    <label htmlFor="exampleInputMobNumber" className="form-label">Mobile Number</label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="exampleInputMobNumber"
+                                        aria-describedby="MobNumberHelp"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
                                         value={props.values.mobile}
                                         name="mobile"
                                     />
@@ -347,73 +352,106 @@ const RegistrationForm = () => {
 
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <DemoContainer components={['DatePicker']}>
-                                        <DatePicker 
-                                        label="Select Date of birth" 
-                                        value={props.values.birthDate} 
-                                        onChange={handleChange} 
-                                        onBlur={props.handleBlur}
-                                        name="birthDate"
+                                        <DatePicker
+                                            label="Select Date of birth"
+                                            value={props.values.birthDate}
+                                            onChange={handleChange}
+                                            onBlur={props.handleBlur}
+                                            name="birthDate"
                                         />
-                                         <span className='error_message'> {props.touched.birthDate && props.errors.birthDate ? (
-                                        <div>{props.errors.birthDate}</div>
-                                    ) : null}</span>
+                                        <span className='error_message'> {props.touched.birthDate && props.errors.birthDate ? (
+                                            <div>{props.errors.birthDate}</div>
+                                        ) : null}</span>
                                     </DemoContainer>
                                 </LocalizationProvider>
 
-                                <div> Gender </div>
-                                <div class="form-check form-check-inline">
-                                    <input 
-                                    class="form-check-input" 
-                                    type="radio" 
-                                    id="inlineRadio1" 
-                                    value='Male' 
-                                        onChange={handleChange} 
-                                        onBlur={props.handleBlur}
-                                        name="gender" 
-                                     />
+                                 <div>Gender </div>
+                                <div className="my-2 form-check form-check-inline">
+                                    <label className="form-check-label" htmlFor="inlineRadio1">Male</label>
 
-                                    <label class="form-check-label" for="inlineRadio1">Male</label>
-                                    
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input 
-                                    class="form-check-input" 
-                                    type="radio" 
-                                    id="inlineRadio2" 
-                                    value='Female'
-                                        onChange={handleChange} 
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        id="inlineRadio1"
+                                        value='Male'
+                                        onChange={props.handleChange}
                                         onBlur={props.handleBlur}
-                                        name="gender" 
+                                        name="gender"
                                     />
-                                    <label class="form-check-label" for="inlineRadio2">Female</label>
-                                    <span className='error_message'> {props.touched.gender && props.errors.gender ? (
+
+
+                                </div>
+                                <div className="form-check form-check-inline">
+                                    <label className="form-check-label" htmlFor="inlineRadio2">Female</label>
+                                    <input
+                                        className="form-check-input"
+                                        type="radio"
+                                        id="inlineRadio2"
+                                        value='Female'
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
+                                        name="gender"
+                                    />
+
+                                   
+                                </div>
+                                 <span className='error_message'> {props.touched.gender && props.errors.gender ? (
                                         <div>{props.errors.gender}</div>
                                     ) : null}</span>
-                                </div>
 
                                 <div className='my-2'> Hobbies </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1" />
-                                    <label class="form-check-label" for="inlineCheckbox1">Cricket</label>
+                                <div className="form-check form-check-inline">
+                                <label className="form-check-label" htmlFor="inlineCheckbox1">Cricket</label>
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id="inlineCheckbox1"
+                                        value="Cricket"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
+                                        name="hobby"
+
+                                    />
+                                   
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" />
-                                    <label class="form-check-label" for="inlineCheckbox2">Badminton</label>
+                                <div className="form-check form-check-inline">
+                                <label className="form-check-label" htmlFor="inlineCheckbox2">Badminton</label>
+
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id="inlineCheckbox2"
+                                        value="Badminton"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
+                                        name="hobby"
+                                    />
                                 </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3" />
-                                    <label class="form-check-label" for="inlineCheckbox3">Singing</label>
+                                <div className="form-check form-check-inline">
+                                <label className="form-check-label" htmlFor="inlineCheckbox3">Singing</label>
+                                    <input
+                                        className="form-check-input"
+                                        type="checkbox"
+                                        id="inlineCheckbox3"
+                                        value="Singing"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
+                                        name="hobby"
+                                    />
+
                                 </div>
+                                <span className='error_message'> {props.touched.hobby && props.errors.hobby ? (
+                                        <div>{props.errors.hobby}</div>
+                                    ) : null}</span>
 
 
-                                <div class="mb-3 form-check my-3">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" />
-                                    <label class="form-check-label" for="exampleCheck1">I agree to term and conditions</label>
-                                </div>
+                                {/* <div className="mb-3 form-check my-3">
+                                    <input type="checkbox" className="form-check-input" id="exampleCheck1" />
+                                    <label className="form-check-label" htmlFor="exampleCheck1">I agree to term and conditions</label>
+                                </div> */}
 
-
-
-                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <br />
+                                <button type="submit" className="btn btn-primary">Submit</button>
 
                             </form>
                         </div>
