@@ -1,7 +1,8 @@
 import React from 'react'
-import { BrowserRouter,Link,Route, Routes } from 'react-router-dom'
+import { BrowserRouter,Route, Routes } from 'react-router-dom'
 import RegistrationForm from './RegistrationForm'
 import Login from './Login'
+import Dashboard from './Dashboard'
 
 const MainRoute = () => {
     return (
@@ -12,6 +13,7 @@ const MainRoute = () => {
                     <Route path='/' element={<RegistrationForm />} />
                     <Route path='/registration' element={<RegistrationForm />} />
                     <Route path='/login' element={<Login />} />
+                    <Route path='/dashboard' element={<Dashboard/>} />
                 </Routes>
             </BrowserRouter>
         </>

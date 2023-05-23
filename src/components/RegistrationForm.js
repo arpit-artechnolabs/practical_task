@@ -118,7 +118,7 @@ const RegistrationForm = () => {
                     <>
                         {/* {console.log(props)} */}
                         <div className='container my-4'>
-                            <h4 className='d-flex justify-content-center text-primary'>Registation Form</h4>
+                            <h3 className='d-flex justify-content-center text-primary'>Registation Form</h3>
                             <form onSubmit={props.handleSubmit}>
 
                                 <div className="mb-3">
