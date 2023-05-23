@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react'
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/Login.css'
 import { userLogin } from '../services/UserService';
 import { encryptStorage1 } from '../utility/Storage';
@@ -90,6 +90,7 @@ const Login = () => {
                         </>
                     )}
                 </Formik>
+                <div className='my-2'>Do not have account ? <Link to='/registration'> Click Here </Link></div>
             </div>
 
         </>
