@@ -134,8 +134,8 @@ const RegistrationForm = () => {
 
     return (
         <>
-            <div className='container my-5'>
-                <h3 className='d-flex justify-content-center text-primary'>Registation Form</h3>
+            <div className='container rounded-2 border border-secondary-subtle my-5'>
+                <h3 className='my-2 d-flex justify-content-center text-primary'>Registation Form</h3>
                 <Formik
                     initialValues={userData}
                     enableReinitialize={true}

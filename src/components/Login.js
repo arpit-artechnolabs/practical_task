@@ -64,8 +64,8 @@ const Login = () => {
     return (
         <>
 
-            <div className='container my-5'>
-                <h3 className='d-flex justify-content-center text-primary'>Login Form</h3>
+            <div className='container rounded-2 border border-secondary-subtle my-5'>
+                <h3 className='my-2 col-md-4 text-primary'>Login Form</h3>
                 <Formik
                     initialValues={data}
                     enableReinitialize={true}
@@ -76,7 +76,7 @@ const Login = () => {
 
                         <>
                             <form onSubmit={props.handleSubmit} className='my-3'>
-                                <div className="mb-3">
+                                <div className="col-md-4 mb-4">
                                     <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
                                     <input name="email" type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={props?.values?.email} onBlur={props?.handleBlur}
                                         onChange={props.handleChange} />
@@ -84,18 +84,18 @@ const Login = () => {
 
                                 </div>
 
-                                <div className="mb-3">
+                                <div className="col-md-4 mb-3">
                                     <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                                     <input name='password' type="password" className="form-control" id="exampleInputPassword1" value={props?.values?.password} onChange={props.handleChange} onBlur={props?.handleBlur} />
                                     <span className="login_error_message">  {props?.touched.password && props?.errors.password ? props?.errors?.password : null}</span>
                                 </div>
-                                <h6 className="wrong-crednetial-message">{error && error}</h6>
-                                <button type="submit" className="btn btn-primary">Submit</button>
+                                {/* <h6 className="col-md-4 wrong-crednetial-message">{error && error}</h6> */}
+                                <button type="submit" className="col-md-4 btn btn-primary">Submit</button>
                             </form>
                         </>
                     )}
                 </Formik>
-                <div className='my-2'>Do not have account ? <Link to='/registration'> Click Here </Link></div>
+                <div className='col-md-4 my-2'>Do not have account ? <Link to='/registration'> Click Here </Link></div>
             </div>
 
         </>
