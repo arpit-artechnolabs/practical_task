@@ -456,7 +456,7 @@ const RegistrationForm = () => {
                                 <button type="submit" className="btn btn-primary">Submit</button>
 
                             </form>
-                            <div className='my-2'>Already have an account ? <Link to='/login'> Login Here </Link></div>
+                            <div className='my-2'>Already have an account ? <Link to='/'> Login Here </Link></div>
                         </div>
                     </>
                 )}

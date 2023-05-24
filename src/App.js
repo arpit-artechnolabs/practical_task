@@ -6,13 +6,14 @@ import { encryptStorage1 } from './utility/Storage';
 
 function App() {
 
-//  let user= encryptStorage1.getItem('userData')
-//  console.log(user);
-  console.log();
-  const [userName,setUserName]=useState('')
-  console.log(userName);
+ let currentUser= encryptStorage1.getItem('userData')
+ let token=encryptStorage1.getItem('token')
+  const [userName,setUserName]=useState(currentUser)
+  const [currentToken,setCurrentToken]=useState(token)
+
+  // console.log(currentToken,'currentToken');
   return (
-    <UserContext.Provider value={{userName,setUserName}}>
+    <UserContext.Provider value={{userName,setUserName,currentToken,setCurrentToken}}>
      <MainRoute/>
     </UserContext.Provider>
   );

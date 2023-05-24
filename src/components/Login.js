@@ -6,11 +6,11 @@ import '../css/Login.css'
 import { userLogin } from '../services/UserService';
 import { encryptStorage1 } from '../utility/Storage';
 import { UserContext } from '../context/Context';
+import { updateToken } from '../functions/Function';
 
 const Login = () => {
 
-    const {userName,setUserName}=useContext(UserContext)
-    console.log(userName);
+    const {userName,setUserName,setCurrentToken}=useContext(UserContext)
     const navigate = useNavigate()
     const [data] = useState({
 
@@ -47,11 +47,13 @@ const Login = () => {
         if (res.status === 201) {
             let token = (res?.data?.token);
             let userData=(res?.data?.user);
-            const {name,middlename,surname}=userData
             encryptStorage1.setItem('token', token)
-            setUserName(`${name} ${middlename} ${surname}`)
+            setCurrentToken(token)
             encryptStorage1.setItem('userData', userData)
-            navigate('/dashboard')
+            setUserName(userData)
+            updateToken()
+
+            navigate('/')
         };
     }
     

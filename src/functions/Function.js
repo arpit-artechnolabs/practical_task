@@ -8,7 +8,6 @@ export const LogOut = () => {
 
 
 let token=encryptStorage1.getItem('token')
-console.log(token);
 
 export const allUserDataHeaders =
 {
@@ -16,3 +15,9 @@ export const allUserDataHeaders =
     'Accept': 'application/json',
     Authorization: `Bearer ${token}`
 }
+
+export const updateToken=()=>{
+    let token=encryptStorage1.getItem('token')
+    allUserDataHeaders.Authorization=`Bearer ${token}`
+}
+
