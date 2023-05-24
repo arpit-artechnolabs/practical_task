@@ -6,13 +6,15 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import * as Yup from "yup";
 import { Formik } from 'formik';
 import '../css/RegistrationForm.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { registerUser } from '../services/UserService';
+
 
 const RegistrationForm = () => {
 
-    const passwordRef=useRef()
-
-    const [userData, setUserData] = useState({
+    const passwordRef = useRef()
+    const navigate=useNavigate()
+    const [userData] = useState({
         "name": "",
         "email": "",
         "password": "",
@@ -26,7 +28,6 @@ const RegistrationForm = () => {
         "city": "",
         "zipcode": "",
         "mobile": "",
-        // "birthDate": "",
         "gender": "",
         "hobby": []
     })
@@ -61,13 +62,6 @@ const RegistrationForm = () => {
             .max(20, 'Must be 20 characters or less')
             .matches(/^[A-Za-z ]*$/, 'Please enter valid surname.')
             .required('This is required field*'),
-
-        mobile: Yup.string()
-            .required('This is required field*')
-            .matches(phoneRegExp, "Please enter a valid phone number")
-            .min(10, 'Too short, Please enter valid 10 digit mobile number.')
-            .max(10, 'Too long, Please enter 10 digit mobile number.'),
-
         address_line1: Yup.string()
             .required('This is required field*'),
         address_line2: Yup.string()
@@ -80,11 +74,12 @@ const RegistrationForm = () => {
             .required('This is required field*'),
         zipcode: Yup.string()
             .required('This is required field*'),
-        // birthDate: Yup.string()
-        //     .required('This is required field*'),
+        mobile: Yup.string()
+            .required('This is required field*')
+            .matches(phoneRegExp, "Please enter a valid phone number")
+            .min(10, 'Too short, Please enter valid 10 digit mobile number.')
+            .max(10, 'Too long, Please enter 10 digit mobile number.'),
         gender: Yup.string()
-            .required('This is required field*'),
-        sex: Yup.string()
             .required('This is required field*'),
         hobby: Yup.array()
             .min(1, 'This is required field*'),
@@ -94,33 +89,65 @@ const RegistrationForm = () => {
     const [birthDate, setBirthDate] = useState(null)
     const handleChange = (Date) => {
         setBirthDate(Date)
-        console.log(Date);
         console.log(Date.$D, Date.$M + 1, Date.$y);
     }
 
-    const handleSubmitForm = (e,values) => {
-        e.preventDefault()
-    
-        // console.log(values);
-        console.log('ok')
+    const handleSubmitForm = (values) => {
+        let date = birthDate?.$D
+        let month = (birthDate?.$M + 1)
+        let year = birthDate?.$y
+        const {name,email,middlename,surname,address_line1,address_line2,country,state,city,zipcode,mobile,gender,hobby,password,confirm_password}=values;
+        let finalHobby=hobby.join(' ')
+
+        let registerUserData = {
+            "name": name,
+            "email": email,
+            "middlename": middlename,
+            "surname": surname,
+            "address_line1": address_line1,
+            "address_line2": address_line2,
+            "country": country,
+            "state": state,
+            "city": city,
+            "zipcode": zipcode,
+            "phone": mobile,
+            "birth_date": `${date} ${month} ${year}`,
+            "gender": gender,
+            "hobby": finalHobby,
+            "password":password,
+            "password_confirmation":confirm_password
+        }
+
+        registerUser(registerUserData)
+        .then((res)=>{
+            console.log(res);
+            window.alert('Account created.')
+            navigate('/')
+            
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+        
+
     }
+
     return (
         <>
+            <div className='container my-5'>
+                <h3 className='d-flex justify-content-center text-primary'>Registation Form</h3>
+                <Formik
+                    initialValues={userData}
+                    enableReinitialize={true}
+                    validationSchema={LoginSchema}
+                    onSubmit={(values) => { handleSubmitForm(values) }}
+                >
 
-            <Formik
-                initialValues={userData}
-                enableReinitialize={true}
-                validationSchema={LoginSchema}
-                onSubmit={(values) => { handleSubmitForm(values) }}
-            >
+                    {(props) => (
+                        <>
+                            {/* {console.log(props)} */}
 
-                {(props) => (
-                    <>
-                        {/* {console.log(props)} */}
-                        <div className='container my-4'>
-                            <h3 className='d-flex justify-content-center text-primary'>Registation Form</h3>
                             <form onSubmit={props.handleSubmit}>
-
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputName" className="form-label">Name</label>
                                     <input
@@ -266,36 +293,14 @@ const RegistrationForm = () => {
                                         value={props.values.country}
                                         name="country"
                                     >
-                                        <option defaultValue="-1">Choose a city</option>
-                                        <option value='Surat'>Surat</option>
-                                        <option value='Ahmedabad'>Ahmedabad</option>
-                                        <option value='Vadodara'>Vadodara</option>
+                                        <option defaultValue="-1">Choose a country</option>
+                                        <option value='India'>India</option>
+                                        <option value='USA'>USA</option>
+                                        <option value='Canada'>Canada</option>
                                     </select>
 
                                     <span className='error_message'> {props.touched.country && props.errors.country ? (
                                         <div>{props.errors.country}</div>
-                                    ) : null}</span>
-                                </div>
-
-
-                                <div className="col-md-6">
-                                    <label htmlFor="inputCity" className="form-label">City</label>
-
-                                    <select id="inputCity"
-                                        className="form-select"
-                                        onChange={props.handleChange}
-                                        onBlur={props.handleBlur}
-                                        value={props.values.city}
-                                        name="city"
-                                    >
-                                        <option defaultValue="-1">Choose a city</option>
-                                        <option value='Surat'>Surat</option>
-                                        <option value='Ahmedabad'>Ahmedabad</option>
-                                        <option value='Vadodara'>Vadodara</option>
-                                    </select>
-
-                                    <span className='error_message'> {props.touched.city && props.errors.city ? (
-                                        <div>{props.errors.city}</div>
                                     ) : null}</span>
                                 </div>
 
@@ -318,6 +323,29 @@ const RegistrationForm = () => {
                                         <div>{props.errors.state}</div>
                                     ) : null}</span>
                                 </div>
+
+                                <div className="col-md-6">
+                                    <label htmlFor="inputCity" className="form-label">City</label>
+
+                                    <select id="inputCity"
+                                        className="form-select"
+                                        onChange={props.handleChange}
+                                        onBlur={props.handleBlur}
+                                        value={props.values.city}
+                                        name="city"
+                                    >
+                                        <option defaultValue="-1">Choose a city</option>
+                                        <option value='Surat'>Surat</option>
+                                        <option value='Ahmedabad'>Ahmedabad</option>
+                                        <option value='Vadodara'>Vadodara</option>
+                                    </select>
+
+                                    <span className='error_message'> {props.touched.city && props.errors.city ? (
+                                        <div>{props.errors.city}</div>
+                                    ) : null}</span>
+                                </div>
+
+
 
                                 <div className="col-md-4 my-3">
                                     <label htmlFor="inputZip" className="form-label">Zip</label>
@@ -361,13 +389,13 @@ const RegistrationForm = () => {
                                             // onBlur={props.handleBlur}
                                             name="birthDate"
                                         />
-                                        <span className='error_message'> {props.touched.birthDate && props.errors.birthDate ? (
+                                        {/* <span className='error_message'> {props.touched.birthDate && props.errors.birthDate ? (
                                             <div>{props.errors.birthDate}</div>
-                                        ) : null}</span>
+                                        ) : null}</span> */}
                                     </DemoContainer>
                                 </LocalizationProvider>
 
-                                 <div>Gender </div>
+                                <div>Gender </div>
                                 <div className="my-2 form-check form-check-inline">
                                     <label className="form-check-label" htmlFor="inlineRadio1">Male</label>
 
@@ -395,15 +423,15 @@ const RegistrationForm = () => {
                                         name="gender"
                                     />
 
-                                   
+
                                 </div>
-                                 <span className='error_message'> {props.touched.gender && props.errors.gender ? (
-                                        <div>{props.errors.gender}</div>
-                                    ) : null}</span>
+                                <span className='error_message'> {props.touched.gender && props.errors.gender ? (
+                                    <div>{props.errors.gender}</div>
+                                ) : null}</span>
 
                                 <div className='my-2'> Hobbies </div>
                                 <div className="form-check form-check-inline">
-                                <label className="form-check-label" htmlFor="inlineCheckbox1">Cricket</label>
+                                    <label className="form-check-label" htmlFor="inlineCheckbox1">Cricket</label>
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
@@ -414,10 +442,10 @@ const RegistrationForm = () => {
                                         name="hobby"
 
                                     />
-                                   
+
                                 </div>
                                 <div className="form-check form-check-inline">
-                                <label className="form-check-label" htmlFor="inlineCheckbox2">Badminton</label>
+                                    <label className="form-check-label" htmlFor="inlineCheckbox2">Badminton</label>
 
                                     <input
                                         className="form-check-input"
@@ -430,7 +458,7 @@ const RegistrationForm = () => {
                                     />
                                 </div>
                                 <div className="form-check form-check-inline">
-                                <label className="form-check-label" htmlFor="inlineCheckbox3">Singing</label>
+                                    <label className="form-check-label" htmlFor="inlineCheckbox3">Singing</label>
                                     <input
                                         className="form-check-input"
                                         type="checkbox"
@@ -443,8 +471,8 @@ const RegistrationForm = () => {
 
                                 </div>
                                 <span className='error_message'> {props.touched.hobby && props.errors.hobby ? (
-                                        <div>{props.errors.hobby}</div>
-                                    ) : null}</span>
+                                    <div>{props.errors.hobby}</div>
+                                ) : null}</span>
 
 
                                 {/* <div className="mb-3 form-check my-3">
@@ -452,15 +480,16 @@ const RegistrationForm = () => {
                                     <label className="form-check-label" htmlFor="exampleCheck1">I agree to term and conditions</label>
                                 </div> */}
 
-                                <br />
-                                <button type="submit" className="btn btn-primary">Submit</button>
+
+                                <button type="submit" className="my-3 btn btn-primary">Submit</button>
 
                             </form>
-                            <div className='my-2'>Already have an account ? <Link to='/'> Login Here </Link></div>
-                        </div>
-                    </>
-                )}
-            </Formik>
+
+                        </>
+                    )}
+                </Formik>
+                <div className='my-2'>Already have an account ? <Link to='/'> Login Here </Link></div>
+            </div>
         </>
     )
 }

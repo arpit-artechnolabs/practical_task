@@ -4,6 +4,20 @@ import { allUserDataHeaders } from "../functions/Function";
 
 let token=encryptStorage1.getItem('token')
 
+export const registerUser=async (registerUserData)=>{
+    try {
+        let res=await axios ({
+            method:"post",
+            url:`${process.env.REACT_APP_API_ENDPOINT}register`,
+            data:registerUserData,
+            headers:{ 'Content-Type':'application/json','Accept':'application/json' }
+        })
+
+        return res
+    } catch (error) {
+        return error
+    }
+}
 
 export const userLogin=async (loginData)=>{
     try {

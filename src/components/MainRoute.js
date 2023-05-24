@@ -16,8 +16,8 @@ const MainRoute = () => {
                 <Routes>
                     <Route path='/' element={ currentToken ? <Dashboard/> :<Login /> } />
                     <Route path='/registration' element={<RegistrationForm />} />
-                    <Route path='/update-profile' element={<UpdateProfile />} />
-                    <Route path='/viewprofile' element={<ViewProfile />} />
+                    <Route path='/update-profile' element={ currentToken ? <UpdateProfile /> :<Login /> } />
+                    <Route path='/viewprofile' element={ currentToken ? <ViewProfile /> : <Login /> } />
 
                     {/* <Route path='/login' element={<Login />} /> */}
                     {/* <Route path='/dashboard' element={ currentToken ? <Dashboard/> :<Login /> } /> */}

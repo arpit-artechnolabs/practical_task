@@ -10,7 +10,7 @@ import { updateToken } from '../functions/Function';
 
 const Login = () => {
 
-    const {userName,setUserName,setCurrentToken}=useContext(UserContext)
+    const {setUserName,setCurrentToken}=useContext(UserContext)
     const navigate = useNavigate()
     const [data] = useState({
 
@@ -52,12 +52,15 @@ const Login = () => {
             encryptStorage1.setItem('userData', userData)
             setUserName(userData)
             updateToken()
-
             navigate('/')
         };
+
+        if(res?.response?.data?.message==="Bad creds"){
+            setError('Please enter valid email id or password.')
+        }
+
     }
     
-
     return (
         <>
 
@@ -86,7 +89,7 @@ const Login = () => {
                                     <input name='password' type="password" className="form-control" id="exampleInputPassword1" value={props?.values?.password} onChange={props.handleChange} onBlur={props?.handleBlur} />
                                     <span className="login_error_message">  {props?.touched.password && props?.errors.password ? props?.errors?.password : null}</span>
                                 </div>
-                                <h6 className="error">{error && error}</h6>
+                                <h6 className="wrong-crednetial-message">{error && error}</h6>
                                 <button type="submit" className="btn btn-primary">Submit</button>
                             </form>
                         </>
