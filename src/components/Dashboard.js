@@ -1,28 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { deleteUser, getAllUserData, selectedUserData } from '../services/UserService'
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import Toolbar from '@mui/material/Toolbar';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
-import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import MenuItem from '@mui/material/MenuItem';
-import { LogOut } from '../functions/Function';
 import { encryptStorage1 } from '../utility/Storage';
-import { UserContext } from '../context/Context';
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
+import Navbar from './Navbar';
 
 
 const Dashboard = () => {
     let currentUser = encryptStorage1.getItem('userData');
-    const { userName, setUserName } = useContext(UserContext)
-    const { name, middlename, surname } = userName
-
     const navigate=useNavigate()
     const [usersData, setUsersData] = useState([])
     const [loading, setLoading] = useState(false)
@@ -45,25 +30,6 @@ const Dashboard = () => {
 
 
     const filterData = usersData.length > 0 && usersData?.filter((el, I) => (el.id !== currentUser.id))
-  
-    const options = ['Update Proflile', 'Logout'];
-
-
-    const [anchorElNav, setAnchorElNav] = React.useState(null);
-
-    const handleOpenNavMenu = (event) => {
-        setAnchorElNav(event.currentTarget);
-    };
-
-    const handleCloseNavMenu = (options) => {
-        setAnchorElNav(null);
-        if (options === "Update Proflile") {
-            console.log('Update Proflile');
-        }
-        if (options === "Logout") {
-            LogOut()
-        }
-    };
 
     const handleDelete = (id) => {
         Swal.fire({
@@ -81,76 +47,21 @@ const Dashboard = () => {
     }
 
     const handleUpdate = (id) => {
-        console.log(id);
-        // navigate('/')
+        navigate('/update-profile')
+    }
+
+    const hanldeViewData=(data)=>{
+        console.log(data);
+        navigate('/viewprofile',{
+            state:{
+                userData:data
+            }
+        })
     }
 
     return (
         <>
-
-            {/* Navbar */}
-            <AppBar position="static">
-                <Container maxWidth="xl">
-                    <Toolbar disableGutters>
-                        <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleOpenNavMenu}
-                                color="inherit"
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorElNav}
-                                anchorOrigin={{
-                                    vertical: 'bottom',
-                                    horizontal: 'left',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'left',
-                                }}
-                                open={Boolean(anchorElNav)}
-                                onClose={handleCloseNavMenu}
-                                sx={{
-                                    display: { xs: 'block', md: 'none' },
-                                }}
-                            >
-                                {options.map((option) => (
-
-                                    <MenuItem key={option} onClick={() => handleCloseNavMenu(option)}>
-                                        <Typography textAlign="center">{option}</Typography>
-                                    </MenuItem>
-
-
-                                ))}
-                            </Menu>
-                        </Box>
-
-                        <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                            {options.map((option) => (
-                                <Button
-                                    key={option}
-                                    onClick={handleCloseNavMenu}
-                                    sx={{ my: 2, color: 'white', display: 'block' }}
-                                >
-                                    {option}
-                                </Button>
-                            ))}
-                        </Box>
-
-                        <Box sx={{ flexGrow: 0 }}>
-                            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            <span>{`${name} ${middlename} ${surname}`}</span>
-                        </Box>
-                    </Toolbar>
-                </Container>
-            </AppBar>
+            <Navbar/>
 
             {/* UsersData */}
             <div className='container my-4'>
@@ -189,7 +100,7 @@ const Dashboard = () => {
                                                     <td>{gender}</td>
                                                     <td>{hobby}</td>
                                                     <td>
-                                                        <button >View Profile</button>
+                                                        <button onClick={()=>hanldeViewData(el)} >View Profile</button>
                                                         <button onClick={() => handleUpdate(id)}>Update Proflile</button>
                                                         <button onClick={() => handleDelete(id)}>Delete Proflile</button>
                                                     </td>
