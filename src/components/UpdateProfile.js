@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react'
 import Navbar from './Navbar'
-import { useNavigate, Link, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import * as Yup from "yup";
 import { Formik } from 'formik';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -15,9 +15,9 @@ import { encryptStorage1 } from '../utility/Storage';
 
 const UpdateProfile = ({ personalData }) => {
 
-    const { userName, setUserName } = useContext(UserContext)
+    const { setUserName } = useContext(UserContext)
     const location = useLocation()
-    const { id, name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode, state, country, birth_date, gender, hobby } = location.pathname === "/update-profile" ? location?.state?.userData : personalData
+    const { id, name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode, state, country, birth_date, gender, hobby } =  personalData
     console.log(id, name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode, state, country, birth_date, gender, hobby);
     const navigate = useNavigate()
     const [userData] = useState({
@@ -87,14 +87,13 @@ const UpdateProfile = ({ personalData }) => {
 
     const handleSubmitForm = (values) => {
 
-
         let date = birthDate?.$D
         let month = (birthDate?.$M + 1)
         let year = birthDate?.$y
         const { name, email, middlename, surname, address_line1, address_line2, country, state, city, zipcode, mobile, gender, hobby, password, confirm_password } = values;
         let finalHobby = hobby.join(' ')
 
-        if (location.pathname === '/personal-profile-change') {
+        
 
             let personaData = {
                 "name": name,
@@ -128,38 +127,8 @@ const UpdateProfile = ({ personalData }) => {
 
 
 
-        }
+        
 
-        if (location.pathname === '/update-profile') {
-
-            let updateUserData = {
-                "name": name,
-                "email": email,
-                "middlename": middlename,
-                "surname": surname,
-                "address_line1": address_line1,
-                "address_line2": address_line2,
-                "country": country,
-                "state": state,
-                "city": city,
-                "zipcode": zipcode,
-                "phone": mobile,
-                "birth_date": `${date} ${month} ${year}`,
-                "gender": gender,
-                "hobby": finalHobby,
-            }
-
-            updateUser(updateUserData, id)
-                .then((res) => {
-                    console.log(res);
-                    window.alert('User details updated.')
-                    navigate('/')
-
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
-        }
 
     }
 
@@ -169,7 +138,7 @@ const UpdateProfile = ({ personalData }) => {
             <Navbar />
 
             <div className='container rounded-2 border border-secondary-subtle my-5'>
-                <h3 className='my-2 d-flex justify-content-center text-primary'> { location.pathname==="/update-profile"  ? "Update User" : "Update Your Profile" }</h3>
+                <h3 className='my-2 d-flex justify-content-center text-primary'>Update Your Profile</h3>
                 <Formik
                     initialValues={userData}
                     enableReinitialize={true}

@@ -48,7 +48,7 @@ const Dashboard = () => {
 
     const handleUpdate = (data) => {
 
-        navigate('/update-profile',{
+        navigate('/update-user',{
             state:{
                 userData:data
             }

@@ -1,39 +1,37 @@
-import React, { useRef, useState } from 'react'
-import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import React, { useState } from 'react'
+import Navbar from './Navbar'
+import { useLocation, useNavigate } from 'react-router-dom'
+import * as Yup from "yup";
+import { Formik } from 'formik';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import * as Yup from "yup";
-import { Formik } from 'formik';
-import '../css/RegistrationForm.css'
-import { Link, useNavigate } from 'react-router-dom';
-import { registerUser } from '../services/UserService';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { updateUser } from '../services/UserService';
 
+const UpdateUser = () => {
 
-const RegistrationForm = () => {
-
-    const passwordRef = useRef()
-    const navigate=useNavigate()
+    const location = useLocation()
+    const { id, name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode, state, country, birth_date, gender, hobby } =  location?.state?.userData
+    console.log(id, name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode, state, country, birth_date, gender, hobby);
+    const navigate = useNavigate()
     const [userData] = useState({
-        "name": "",
-        "email": "",
-        "password": "",
-        "confirm_password": "",
-        "middlename": "",
-        "surname": "",
-        "address_line1": "",
-        "address_line2": "",
-        "country": "",
-        "state": "",
-        "city": "",
-        "zipcode": "",
-        "mobile": "",
+        "name": name === undefined ? "" : name,
+        "email": email === undefined ? "" : email,
+        "middlename": middlename === undefined ? "" : middlename,
+        "surname": surname === undefined ? "" : surname,
+        "address_line1": address_line1 === undefined ? "" : address_line1,
+        "address_line2": address_line2 === undefined ? "" : address_line2,
+        "country": country === undefined ? "" : country,
+        "state": state === undefined ? "" : state,
+        "city": city === undefined ? "" : city,
+        "zipcode": zipcode === undefined ? "" : zipcode,
+        "mobile": phone === undefined ? "" : phone,
         "gender": "",
         "hobby": []
     })
 
     const phoneRegExp = (/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/);
-
 
     const LoginSchema = Yup.object({
         name: Yup.string()
@@ -43,14 +41,6 @@ const RegistrationForm = () => {
         email: Yup.string()
             .matches(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/, 'Please enter valid email.')
             .required('This is required field*'),
-        password: Yup.string()
-            .required('This is required field*')
-            // eslint-disable-next-line no-useless-escape
-            .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-                "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character."),
-        confirm_password: Yup.string()
-            .required('This is required field*')
-            .oneOf([Yup.ref('password'), null], 'Password and confirm password must match.'),
         middlename: Yup.string()
             .max(20, 'Must be 20 characters or less')
             .matches(/^[A-Za-z ]*$/, 'Please enter valid middle name.')
@@ -91,51 +81,49 @@ const RegistrationForm = () => {
     }
 
     const handleSubmitForm = (values) => {
+
         let date = birthDate?.$D
         let month = (birthDate?.$M + 1)
         let year = birthDate?.$y
-        const {name,email,middlename,surname,address_line1,address_line2,country,state,city,zipcode,mobile,gender,hobby,password,confirm_password}=values;
-        let finalHobby=hobby.join(' ')
+        const { name, email, middlename, surname, address_line1, address_line2, country, state, city, zipcode, mobile, gender, hobby, password, confirm_password } = values;
+        let finalHobby = hobby.join(' ')
 
-        let registerUserData = {
-            "name": name,
-            "email": email,
-            "middlename": middlename,
-            "surname": surname,
-            "address_line1": address_line1,
-            "address_line2": address_line2,
-            "country": country,
-            "state": state,
-            "city": city,
-            "zipcode": zipcode,
-            "phone": mobile,
-            "birth_date": `${date} ${month} ${year}`,
-            "gender": gender,
-            "hobby": finalHobby,
-            "password":password,
-            "password_confirmation":confirm_password
-        }
+            let updateUserData = {
+                "name": name,
+                "email": email,
+                "middlename": middlename,
+                "surname": surname,
+                "address_line1": address_line1,
+                "address_line2": address_line2,
+                "country": country,
+                "state": state,
+                "city": city,
+                "zipcode": zipcode,
+                "phone": mobile,
+                "birth_date": `${date} ${month} ${year}`,
+                "gender": gender,
+                "hobby": finalHobby,
+            }
+            console.log(updateUserData);
+            updateUser(updateUserData, id)
+                .then((res) => {
+                    console.log(res);
+                    window.alert('User details updated.')
+                    navigate('/')
 
-        registerUser(registerUserData)
-        .then((res)=>{
-            console.log(res);
-            window.alert('Account created.')
-            navigate('/')
-            
-        })
-        .catch((error)=>{
-            console.log(error);
-        })
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
         
+
     }
 
     return (
         <>
-            <div className='container my-5'>
-                <div className='row'>
-                    <div className='col-md-4'> </div>
-                        <div className='col-md-4 rounded-2 border border-secondary-subtle'>
-                <h3 className='my-2 text-center text-primary'>Registation Form</h3>
+            <Navbar />
+            <div className='container rounded-2 border border-secondary-subtle my-5'>
+                <h3 className='my-2 d-flex justify-content-center text-primary'> Update User</h3>
                 <Formik
                     initialValues={userData}
                     enableReinitialize={true}
@@ -145,7 +133,6 @@ const RegistrationForm = () => {
 
                     {(props) => (
                         <>
-
                             <form onSubmit={props.handleSubmit}>
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputName" className="form-label">Name</label>
@@ -181,41 +168,6 @@ const RegistrationForm = () => {
                                         <div>{props.errors.email}</div>
                                     ) : null}</span>
                                 </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="exampleInputPassword1"
-                                        onChange={props.handleChange}
-                                        onBlur={props.handleBlur}
-                                        value={props.values.password}
-                                        name="password"
-                                        ref={passwordRef}
-                                    />
-                                    <span className='error_message'> {props.touched.password && props.errors.password ? (
-                                        <div>{props.errors.password}</div>
-                                    ) : null}</span>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label htmlFor="exampleInputCPassword1" className="form-label">Confirm Password</label>
-                                    <input
-                                        type="password"
-                                        className="form-control"
-                                        id="exampleInputCPassword1"
-                                        onChange={props.handleChange}
-                                        onBlur={props.handleBlur}
-                                        value={props.values.confirm_password}
-                                        name="confirm_password"
-                                        ref={passwordRef}
-                                    />
-                                    <span className='error_message'> {props.touched.confirm_password && props.errors.confirm_password ? (
-                                        <div>{props.errors.confirm_password}</div>
-                                    ) : null}</span>
-                                </div>
-
 
                                 <div className="mb-3">
                                     <label htmlFor="exampleInputMiddleName" className="form-label">Middle Name</label>
@@ -282,8 +234,7 @@ const RegistrationForm = () => {
                                     ) : null}</span>
                                 </div>
 
-                                {/* <div className="col-md-12 my-3"> */}
-                                <div className="my-3">
+                                <div className="col-md-6 my-3">
                                     <label htmlFor="inputCountry" className="form-label">Country</label>
 
                                     <select id="inputCountry"
@@ -304,7 +255,7 @@ const RegistrationForm = () => {
                                     ) : null}</span>
                                 </div>
 
-                                <div className="my-3">
+                                <div className="col-md-4 my-3">
                                     <label htmlFor="inputState" className="form-label">State</label>
                                     <select
                                         id="inputState"
@@ -324,7 +275,7 @@ const RegistrationForm = () => {
                                     ) : null}</span>
                                 </div>
 
-                                <div>
+                                <div className="col-md-6">
                                     <label htmlFor="inputCity" className="form-label">City</label>
 
                                     <select id="inputCity"
@@ -347,7 +298,7 @@ const RegistrationForm = () => {
 
 
 
-                                <div className="my-3">
+                                <div className="col-md-4 my-3">
                                     <label htmlFor="inputZip" className="form-label">Zip</label>
                                     <input
                                         type="text"
@@ -363,7 +314,7 @@ const RegistrationForm = () => {
                                     ) : null}</span>
                                 </div>
 
-                                <div className="mb-3">
+                                <div className="mb-3 col-md-4">
                                     <label htmlFor="exampleInputMobNumber" className="form-label">Mobile Number</label>
                                     <input
                                         type="text"
@@ -388,7 +339,6 @@ const RegistrationForm = () => {
                                             onChange={handleChange}
                                             // onBlur={props.handleBlur}
                                             name="birthDate"
-                                            className='col-md-12'
                                         />
                                         {/* <span className='error_message'> {props.touched.birthDate && props.errors.birthDate ? (
                                             <div>{props.errors.birthDate}</div>
@@ -396,8 +346,8 @@ const RegistrationForm = () => {
                                     </DemoContainer>
                                 </LocalizationProvider>
 
-                                <div className='my-2'>Gender </div>
-                                <div className="form-check form-check-inline">
+                                <div>Gender </div>
+                                <div className="my-2 form-check form-check-inline">
                                     <label className="form-check-label" htmlFor="inlineRadio1">Male</label>
 
                                     <input
@@ -474,22 +424,18 @@ const RegistrationForm = () => {
                                 <span className='error_message'> {props.touched.hobby && props.errors.hobby ? (
                                     <div>{props.errors.hobby}</div>
                                 ) : null}</span>
+                                <br />
+                                <button onClick={() => navigate('/')} className="my-3 mx-2 btn btn-primary">Cancel</button>
+                                <button type="submit" className="my-3 btn btn-primary">Submit</button>
 
-                                    <div className='my-3 text-center'>
-                                <button type="submit" className=" btn btn-primary">Submit</button>
-                                </div>
                             </form>
 
                         </>
                     )}
                 </Formik>
-                <div className='my-2 text-center'>Already have an account ? <Link to='/'> Login Here </Link></div>
-                </div>
-                
-                </div>
             </div>
         </>
     )
 }
 
-export default RegistrationForm;
+export default UpdateUser

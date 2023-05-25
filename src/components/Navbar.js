@@ -33,7 +33,7 @@ const Navbar = () => {
     const handleCloseNavMenu = (options) => {
         setAnchorElNav(null);
         if (options === "Update Proflile") {
-            navigate('/personal-profile-change')
+            navigate('/update-profile')
         }
         if (options === "Logout") {
             Swal.fire({

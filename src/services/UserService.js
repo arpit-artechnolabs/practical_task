@@ -1,8 +1,6 @@
 import axios from "axios"
-import { encryptStorage1 } from "../utility/Storage";
 import { allUserDataHeaders } from "../functions/Function";
 
-let token=encryptStorage1.getItem('token')
 
 export const registerUser=async (registerUserData)=>{
     try {
