@@ -10,7 +10,7 @@ import { updateToken } from '../functions/Function';
 
 const Login = () => {
 
-    const {setUserName,setCurrentToken}=useContext(UserContext)
+    const { setUserName, setCurrentToken } = useContext(UserContext)
     const navigate = useNavigate()
     const [data] = useState({
 
@@ -46,7 +46,7 @@ const Login = () => {
         console.log(res);
         if (res.status === 201) {
             let token = (res?.data?.token);
-            let userData=(res?.data?.user);
+            let userData = (res?.data?.user);
             encryptStorage1.setItem('token', token)
             setCurrentToken(token)
             encryptStorage1.setItem('userData', userData)
@@ -55,47 +55,54 @@ const Login = () => {
             navigate('/')
         };
 
-        if(res?.response?.data?.message==="Bad creds"){
+        if (res?.response?.data?.message === "Bad creds") {
             setError('Please enter valid email id or password.')
         }
 
     }
-    
+
     return (
         <>
 
-            <div className='container rounded-2 border border-secondary-subtle my-5'>
-                <h3 className='my-2 col-md-4 text-primary'>Login Form</h3>
-                <Formik
-                    initialValues={data}
-                    enableReinitialize={true}
-                    validationSchema={LoginSchema}
-                    onSubmit={(values) => handleSubmitForm(values)}
-                >
-                    {(props) => (
+            <div className='container my-5'>
+                <div className='row'>
+                    <div className='col-md-4'></div>
+                    <div className='col-md-4 rounded-2 border border-secondary-subtle'>
+                        <h3 className='my-2 text-center text-primary'>Login Form</h3>
+                        <Formik
+                            initialValues={data}
+                            enableReinitialize={true}
+                            validationSchema={LoginSchema}
+                            onSubmit={(values) => handleSubmitForm(values)}
+                        >
+                            {(props) => (
 
-                        <>
-                            <form onSubmit={props.handleSubmit} className='my-3'>
-                                <div className="col-md-4 mb-4">
-                                    <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
-                                    <input name="email" type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={props?.values?.email} onBlur={props?.handleBlur}
-                                        onChange={props.handleChange} />
-                                    <span className="login_error_message">  {props?.touched.email && props?.errors?.email ? props?.errors?.email : null}</span>
+                                <>
+                                    <form onSubmit={props.handleSubmit} className='my-3'>
+                                        <div className=" mb-4">
+                                            <label htmlFor="exampleInputEmail1" className="form-label">Email address</label>
+                                            <input name="email" type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" value={props?.values?.email} onBlur={props?.handleBlur}
+                                                onChange={props.handleChange} />
+                                            <span className="login_error_message">  {props?.touched.email && props?.errors?.email ? props?.errors?.email : null}</span>
 
-                                </div>
+                                        </div>
 
-                                <div className="col-md-4 mb-3">
-                                    <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
-                                    <input name='password' type="password" className="form-control" id="exampleInputPassword1" value={props?.values?.password} onChange={props.handleChange} onBlur={props?.handleBlur} />
-                                    <span className="login_error_message">  {props?.touched.password && props?.errors.password ? props?.errors?.password : null}</span>
-                                </div>
-                                <h6 className="col-md-4 wrong-crednetial-message">{error && error}</h6>
-                                <button type="submit" className="col-md-4 btn btn-primary">Submit</button>
-                            </form>
-                        </>
-                    )}
-                </Formik>
-                <div className='col-md-4 my-2'>Do not have account ? <Link to='/registration'> Click Here </Link></div>
+                                        <div className=" mb-3">
+                                            <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
+                                            <input name='password' type="password" className="form-control" id="exampleInputPassword1" value={props?.values?.password} onChange={props.handleChange} onBlur={props?.handleBlur} />
+                                            <span className="login_error_message">  {props?.touched.password && props?.errors.password ? props?.errors?.password : null}</span>
+                                        </div>
+                                        <h6 className=" wrong-crednetial-message">{error && error}</h6>
+                                        <div className='text-center '>
+                                            <button type="submit" className="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+                                </>
+                            )}
+                        </Formik>
+                        <div className='text-center my-2'>Do not have account ? <Link to='/registration'> Click Here </Link></div>
+                    </div>
+                </div>
             </div>
 
         </>

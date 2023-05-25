@@ -54,7 +54,7 @@ export const selectedUserData=async ()=>{
     try {
         let res=await axios ({
             method:"get",
-            url:`${process.env.REACT_APP_API_ENDPOINT}users/86`,
+            url:`${process.env.REACT_APP_API_ENDPOINT}users/66`,
             headers:allUserDataHeaders
         
         })
@@ -115,6 +115,21 @@ export const selfProfileChange=async (personaData)=>{
             method:"PUT",
             url:`${process.env.REACT_APP_API_ENDPOINT}change-profile`,
             data:personaData,
+            headers:allUserDataHeaders
+        })
+        
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+export const passwordChange=async (passwordData)=>{
+    try {
+        let res=await axios ({
+            method:"PUT",
+            url:`${process.env.REACT_APP_API_ENDPOINT}change-password`,
+            data:passwordData,
             headers:allUserDataHeaders
         })
         

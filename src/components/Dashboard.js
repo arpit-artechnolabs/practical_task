@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { deleteUser, getAllUserData, selectedUserData } from '../services/UserService'
+import { deleteUser, getAllUserData } from '../services/UserService'
 import { encryptStorage1 } from '../utility/Storage';
 import Swal from 'sweetalert2'
 import { useNavigate } from 'react-router-dom';
@@ -28,14 +28,14 @@ const Dashboard = () => {
         userDataFuntion()
     }, [])
 
-
     const filterData = usersData.length > 0 && usersData?.filter((el, I) => (el.id !== currentUser.id))
 
     const handleDelete = (id) => {
         Swal.fire({
             title: 'Are you sure you want to delete this user ?',
             showCancelButton: true,
-            confirmButtonText: 'Save',
+            confirmButtonText: 'Delete',
+            cancelButtonText:'No'
         }).then(async (result) => {
 
             if (result.isConfirmed) {

@@ -13,14 +13,18 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { LogOut } from '../functions/Function';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Navbar = () => {
 
-    const { userName, setUserName } = useContext(UserContext)
+    const { userName } = useContext(UserContext)
     const { name, middlename, surname } = userName
-    const options = ['Update Proflile', 'Logout'];
+    let firstLetter=name.charAt(0)
+    let lastLetter=surname.charAt(0)
+    
+    const options = ['Update Proflile', 'Change Password' ,'Logout'];
     const [anchorElNav, setAnchorElNav] = React.useState(null);
-    const navigate=useNavigate()
+    const navigate = useNavigate()
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -32,17 +36,32 @@ const Navbar = () => {
             navigate('/personal-profile-change')
         }
         if (options === "Logout") {
-            LogOut()
+            Swal.fire({
+                title: 'Are you sure you want to log out ?',
+                showCancelButton: true,
+                confirmButtonText: 'Yes',
+                cancelButtonText:'No'
+            }).then((result) => {
+    
+                if (result.isConfirmed) {
+                   
+                    LogOut()
+                }
+            })
+        }
+
+        if(options==="Change Password"){
+            navigate('/updatepassword')
         }
     };
 
     return (
         <>
 
-            {/* Navbar */}
             <AppBar position="static">
                 <Container maxWidth="xl">
                     <Toolbar disableGutters>
+
                         <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
                             <IconButton
                                 size="large"
@@ -73,12 +92,9 @@ const Navbar = () => {
                                 }}
                             >
                                 {options.map((option) => (
-
                                     <MenuItem key={option} onClick={() => handleCloseNavMenu(option)}>
                                         <Typography textAlign="center">{option}</Typography>
                                     </MenuItem>
-
-
                                 ))}
                             </Menu>
                         </Box>
@@ -87,7 +103,7 @@ const Navbar = () => {
                             {options.map((option) => (
                                 <Button
                                     key={option}
-                                    onClick={handleCloseNavMenu}
+                                    onClick={() => handleCloseNavMenu(option)}
                                     sx={{ my: 2, color: 'white', display: 'block' }}
                                 >
                                     {option}
@@ -96,8 +112,9 @@ const Navbar = () => {
                         </Box>
 
                         <Box sx={{ flexGrow: 0 }}>
-                            <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
-                            <span>{`${name} ${middlename} ${surname}`}</span>
+
+                            <Avatar  alt="Remy Sharp"> {firstLetter}{lastLetter} </Avatar>
+                            <span >{`${name} ${middlename} ${surname}`}</span>
                         </Box>
                     </Toolbar>
                 </Container>

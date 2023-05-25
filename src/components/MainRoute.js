@@ -7,6 +7,7 @@ import { UserContext } from '../context/Context'
 import UpdateProfile from './UpdateProfile'
 import ViewProfile from './ViewProfile'
 import PersonalProfileChange from './PersonalProfileChange'
+import PasswordChange from './PasswordChange'
 
 const MainRoute = () => {
     const {currentToken}=useContext(UserContext)
@@ -20,6 +21,7 @@ const MainRoute = () => {
                     <Route path='/update-profile' element={ currentToken ? <UpdateProfile /> :<Login /> } />
                     <Route path='/viewprofile' element={ currentToken ? <ViewProfile /> : <Login /> } />
                     <Route path='/personal-profile-change' element={ currentToken ? <PersonalProfileChange /> : <Login /> } />
+                    <Route path='/updatepassword' element={ currentToken ? <PasswordChange /> : <Login /> } />
 
                     {/* <Route path='/login' element={<Login />} /> */}
                     {/* <Route path='/dashboard' element={ currentToken ? <Dashboard/> :<Login /> } /> */}
