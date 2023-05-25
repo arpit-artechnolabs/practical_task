@@ -10,7 +10,6 @@ function App() {
  let token=encryptStorage1.getItem('token')
   const [userName,setUserName]=useState(currentUser)
   const [currentToken,setCurrentToken]=useState(token)
-
   // console.log(currentToken,'currentToken');
   return (
     <UserContext.Provider value={{userName,setUserName,currentToken,setCurrentToken}}>

@@ -41,8 +41,6 @@ const RegistrationForm = () => {
             .matches(/^[A-Za-z ]*$/, 'Please enter valid name.')
             .required('This is required field*'),
         email: Yup.string()
-            // .email('Invalid email address')
-            // .matches(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please Enter Valid Email")
             .matches(/^[a-zA-Z0-9]+@(?:[a-zA-Z0-9]+\.)+[A-Za-z]+$/, 'Please enter valid email.')
             .required('This is required field*'),
         password: Yup.string()

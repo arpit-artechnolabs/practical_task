@@ -7,8 +7,8 @@ const ViewProfile = () => {
     let navigate=useNavigate()
     const location = useLocation()
     console.log(location);
-    const { name, middlename, surname, email, phone, address_line1, address_line2, city, state, country, birth_date, gender, hobby } = location?.state?.userData
-    console.log(name, middlename, surname);
+    const { name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode,state, country, birth_date, gender, hobby } = location?.state?.userData
+    
     return (
         <>
             <Navbar />
@@ -17,12 +17,12 @@ const ViewProfile = () => {
                 <p className='mb-0'>  Name : {`${name} ${middlename} ${surname}`}  </p>
                 <p className='mb-0'>Email : {email} </p>
                 <p className='mb-0'>Mobile Number : {phone} </p>
-                <p className='mb-0'>Address : {`${address_line1} ${address_line2} ${city} ${state} ${country}`} </p>
+                <p className='mb-0'>Address : {`${address_line1} ${address_line2} ${city} ${zipcode} ${state} ${country}`} </p>
                 <p className='mb-0'>Birthdate : {birth_date} </p>
                 <p className='mb-0'>Gender : {gender} </p>
                 <p className='mb-0'>Hobbies : {hobby} </p>
 
-                <button type="button" onClick={()=>navigate('/')} class="my-2 btn btn-primary">Go to dashboard</button>
+                <button type="button" onClick={()=>navigate('/')} className="my-2 btn btn-primary">Go to dashboard</button>
             </div>
         </>
     )

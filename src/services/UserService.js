@@ -79,3 +79,48 @@ export const deleteUser=async (id)=>{
     }
 }
 
+export const updateUser=async (updateUserData,id)=>{
+    try {
+        let res=await axios ({
+            method:"PUT",
+            url:`${process.env.REACT_APP_API_ENDPOINT}users/${id}`,
+            data:updateUserData,
+            headers:allUserDataHeaders
+        })
+        
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+export const selfUser=async ()=>{
+    try {
+        let res=await axios ({
+            method:"get",
+            url:`${process.env.REACT_APP_API_ENDPOINT}me`,
+            headers:allUserDataHeaders
+        })
+        
+        return res
+    } catch (error) {
+        return error
+    }
+}
+
+
+export const selfProfileChange=async (personaData)=>{
+    try {
+        let res=await axios ({
+            method:"PUT",
+            url:`${process.env.REACT_APP_API_ENDPOINT}change-profile`,
+            data:personaData,
+            headers:allUserDataHeaders
+        })
+        
+        return res
+    } catch (error) {
+        return error
+    }
+}
+

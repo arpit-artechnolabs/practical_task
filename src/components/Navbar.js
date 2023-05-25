@@ -12,6 +12,7 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import { LogOut } from '../functions/Function';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
 
@@ -19,6 +20,7 @@ const Navbar = () => {
     const { name, middlename, surname } = userName
     const options = ['Update Proflile', 'Logout'];
     const [anchorElNav, setAnchorElNav] = React.useState(null);
+    const navigate=useNavigate()
 
     const handleOpenNavMenu = (event) => {
         setAnchorElNav(event.currentTarget);
@@ -27,7 +29,7 @@ const Navbar = () => {
     const handleCloseNavMenu = (options) => {
         setAnchorElNav(null);
         if (options === "Update Proflile") {
-            console.log('Update Proflile');
+            navigate('/personal-profile-change')
         }
         if (options === "Logout") {
             LogOut()

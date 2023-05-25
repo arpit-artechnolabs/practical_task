@@ -46,8 +46,13 @@ const Dashboard = () => {
         })
     }
 
-    const handleUpdate = (id) => {
-        navigate('/update-profile')
+    const handleUpdate = (data) => {
+
+        navigate('/update-profile',{
+            state:{
+                userData:data
+            }
+        })
     }
 
     const hanldeViewData=(data)=>{
@@ -101,7 +106,7 @@ const Dashboard = () => {
                                                     <td>{hobby}</td>
                                                     <td>
                                                         <button onClick={()=>hanldeViewData(el)} >View Profile</button>
-                                                        <button onClick={() => handleUpdate(id)}>Update Proflile</button>
+                                                        <button onClick={() => handleUpdate(el)}>Update Proflile</button>
                                                         <button onClick={() => handleDelete(id)}>Delete Proflile</button>
                                                     </td>
                                                 </tr>

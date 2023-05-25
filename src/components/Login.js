@@ -89,7 +89,7 @@ const Login = () => {
                                     <input name='password' type="password" className="form-control" id="exampleInputPassword1" value={props?.values?.password} onChange={props.handleChange} onBlur={props?.handleBlur} />
                                     <span className="login_error_message">  {props?.touched.password && props?.errors.password ? props?.errors?.password : null}</span>
                                 </div>
-                                {/* <h6 className="col-md-4 wrong-crednetial-message">{error && error}</h6> */}
+                                <h6 className="col-md-4 wrong-crednetial-message">{error && error}</h6>
                                 <button type="submit" className="col-md-4 btn btn-primary">Submit</button>
                             </form>
                         </>
