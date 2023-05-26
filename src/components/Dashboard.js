@@ -76,7 +76,7 @@ const Dashboard = () => {
                         {filterData.length === 0 ? <h6>No users record found.</h6> :
                             <table className="table table-bordered border-primary border border-secondary-subtle">
                                 <thead>
-                                    <tr>
+                                    <tr className='text-center'>
                                         <th scope="col">Sr.No.</th>
                                         <th scope="col">Name</th>
                                         <th scope="col">Email</th>
@@ -95,7 +95,7 @@ const Dashboard = () => {
 
                                         return (
                                             <React.Fragment key={id}>
-                                                <tr >
+                                                <tr className='text-center' >
                                                     <th scope="row">{I + 1}</th>
                                                     <td>{`${name} ${middlename} ${surname}`}</td>
                                                     <td>{email}</td>
