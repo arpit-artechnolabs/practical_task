@@ -1,37 +1,45 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Navbar from './Navbar'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate} from 'react-router-dom'
 import * as Yup from "yup";
 import { Formik } from 'formik';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
-import { updateUser } from '../services/UserService';
-import { selfProfileChange } from '../services/UserService';
+import { selfProfileChange, selfUser } from '../services/UserService';
 import { UserContext } from '../context/Context';
 import { encryptStorage1 } from '../utility/Storage';
 
 
-const UpdateProfile = ({ personalData }) => {
+const UpdateProfile = () => {
 
-    const { setUserName } = useContext(UserContext)
-    const location = useLocation()
-    const { id, name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode, state, country, birth_date, gender, hobby } =  personalData
+    const {currentUser, setCurrentUser} = useContext(UserContext)
+    const userMe = async () => {
+      let res = await selfUser()
+      console.log(res?.data);
+      setCurrentUser(res?.data);
+    }
+    useEffect(() => {
+      userMe()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    const { id, name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode, state, country, birth_date, gender, hobby } =  currentUser
     console.log(id, name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode, state, country, birth_date, gender, hobby);
     const navigate = useNavigate()
     const [userData] = useState({
-        "name": name === undefined ? "" : name,
-        "email": email=== undefined ? "" : email,
-        "middlename": middlename===undefined ? "" : middlename,
-        "surname": surname===undefined ? "" : surname,
-        "address_line1": address_line1===undefined ? "" : address_line1,
-        "address_line2": address_line2===undefined ? "" : address_line2,
-        "country": country===undefined ? "" : country,
-        "state": state===undefined ? "" : state,
-        "city": city===undefined ? "" : city,
-        "zipcode": zipcode===undefined ? "" : zipcode,
-        "mobile": phone===undefined ? "" : phone,
+        "name": (name === undefined ? "" : name),
+        "email": (email=== undefined ? "" : email),
+        "middlename": (middlename===undefined ? "" : middlename),
+        "surname": (surname===undefined ? "" : surname),
+        "address_line1": (address_line1===undefined ? "" : address_line1),
+        "address_line2": (address_line2===undefined ? "" : address_line2),
+        "country": (country===undefined ? "" : country),
+        "state": (state===undefined ? "" : state),
+        "city": (city===undefined ? "" : city),
+        "zipcode": (zipcode===undefined ? "" : zipcode),
+        "mobile": (phone===undefined ? "" : phone),
         "gender": "",
         "hobby": []
     })
@@ -116,7 +124,7 @@ const UpdateProfile = ({ personalData }) => {
             .then((res) => {
                 console.log(res);
                 encryptStorage1.setItem('userData',res?.data)
-                setUserName(res?.data)
+                setCurrentUser(res?.data)
                 window.alert('Your profile is updated successfully.')
                 navigate('/')
 

@@ -17,8 +17,8 @@ import Swal from 'sweetalert2';
 
 const Navbar = () => {
 
-    const { userName } = useContext(UserContext)
-    const { name, middlename, surname } = userName
+    const { currentUser } = useContext(UserContext)
+    const { name, middlename, surname } = currentUser
     let firstLetter=name.charAt(0)
     let lastLetter=surname.charAt(0)
     

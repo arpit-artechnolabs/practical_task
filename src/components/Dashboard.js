@@ -8,7 +8,7 @@ import Navbar from './Navbar';
 
 const Dashboard = () => {
     let currentUser = encryptStorage1.getItem('userData');
-    const navigate=useNavigate()
+    const navigate = useNavigate()
     const [usersData, setUsersData] = useState([])
     const [loading, setLoading] = useState(false)
 
@@ -35,7 +35,7 @@ const Dashboard = () => {
             title: 'Are you sure you want to delete this user ?',
             showCancelButton: true,
             confirmButtonText: 'Delete',
-            cancelButtonText:'No'
+            cancelButtonText: 'No'
         }).then(async (result) => {
 
             if (result.isConfirmed) {
@@ -48,32 +48,32 @@ const Dashboard = () => {
 
     const handleUpdate = (data) => {
 
-        navigate('/update-user',{
-            state:{
-                userData:data
+        navigate('/update-user', {
+            state: {
+                userData: data
             }
         })
     }
 
-    const hanldeViewData=(data)=>{
+    const hanldeViewData = (data) => {
         console.log(data);
-        navigate('/viewprofile',{
-            state:{
-                userData:data
+        navigate('/viewprofile', {
+            state: {
+                userData: data
             }
         })
     }
 
     return (
         <>
-            <Navbar/>
+            <Navbar />
 
             {/* UsersData */}
             <div className='container my-4'>
 
                 {loading ? <h6>Loading...</h6> :
                     <>
-                        {filterData.length === 0 ? <h6>No records found.</h6> :
+                        {filterData.length === 0 ? <h6>No users record found.</h6> :
                             <table className="table table-bordered border-primary border border-secondary-subtle">
                                 <thead>
                                     <tr>
@@ -105,9 +105,11 @@ const Dashboard = () => {
                                                     <td>{gender}</td>
                                                     <td>{hobby}</td>
                                                     <td>
-                                                        <button onClick={()=>hanldeViewData(el)} >View Profile</button>
-                                                        <button onClick={() => handleUpdate(el)}>Update Proflile</button>
-                                                        <button onClick={() => handleDelete(id)}>Delete Proflile</button>
+
+                                                        <button className='btn btn-primary' onClick={() => hanldeViewData(el)} >View User</button>
+                                                        <button className='my-2 btn btn-success' onClick={() => handleUpdate(el)}>Update User</button>
+                                                        <button className='btn btn-danger' onClick={() => handleDelete(id)}>Delete User</button>
+
                                                     </td>
                                                 </tr>
 

@@ -10,7 +10,7 @@ import { updateToken } from '../functions/Function';
 
 const Login = () => {
 
-    const { setUserName, setCurrentToken } = useContext(UserContext)
+    const { setCurrentUser, setCurrentToken } = useContext(UserContext)
     const navigate = useNavigate()
     const [data] = useState({
 
@@ -50,7 +50,7 @@ const Login = () => {
             encryptStorage1.setItem('token', token)
             setCurrentToken(token)
             encryptStorage1.setItem('userData', userData)
-            setUserName(userData)
+            setCurrentUser(userData)
             updateToken()
             navigate('/')
         };

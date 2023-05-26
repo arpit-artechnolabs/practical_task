@@ -4,11 +4,11 @@ import { useLocation, useNavigate } from 'react-router-dom'
 
 
 const ViewProfile = () => {
-    let navigate=useNavigate()
+    let navigate = useNavigate()
     const location = useLocation()
     console.log(location);
-    const { name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode,state, country, birth_date, gender, hobby } = location?.state?.userData
-    
+    const { name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode, state, country, birth_date, gender, hobby } = location?.state?.userData
+
     return (
         <>
             <Navbar />
@@ -22,7 +22,7 @@ const ViewProfile = () => {
                 <p className='mb-0'>Gender : {gender} </p>
                 <p className='mb-0'>Hobbies : {hobby} </p>
 
-                <button type="button" onClick={()=>navigate('/')} className="my-2 btn btn-primary">Go to dashboard</button>
+                <button type="button" onClick={() => navigate('/')} className="my-2 btn btn-primary">Go to dashboard</button>
             </div>
         </>
     )
