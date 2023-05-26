@@ -96,7 +96,7 @@ const RegistrationForm = () => {
         let month = (birthDate?.$M + 1)
         let year = birthDate?.$y
         const { name, email, middlename, surname, address_line1, address_line2, country, state, city, zipcode, mobile, gender, hobby, password, confirm_password } = values;
-        let finalHobby = hobby.join(' ')
+        let finalHobby = hobby.join(',')
 
         let registerUserData = {
             "name": name,
@@ -136,7 +136,7 @@ const RegistrationForm = () => {
                 <div className='row'>
                     <div className='col-md-4'> </div>
                     <div className='col-md-4 rounded-2 border border-secondary-subtle'>
-                        <h3 className='my-2 text-center text-primary'>Registation Form</h3>
+                        <h3 className='my-3 text-center text-primary'>Registation Form</h3>
                         <Formik
                             initialValues={userData}
                             enableReinitialize={true}
@@ -409,6 +409,7 @@ const RegistrationForm = () => {
                                                 onChange={props.handleChange}
                                                 onBlur={props.handleBlur}
                                                 name="gender"
+                                                
                                             />
 
 

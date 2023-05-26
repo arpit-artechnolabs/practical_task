@@ -73,10 +73,9 @@ const Login = () => {
         <>
 
             <div className='container my-5'>
-                <div className='row'>
-                    <div className='col-md-4'></div>
-                    <div className='col-md-4 rounded-2 border border-secondary-subtle'>
-                        <h3 className='my-2 text-center text-primary'>Login Form</h3>
+                <div className='d-flex justify-content-center'>
+                    <div className='rounded-2 border border-secondary-subtle p-4'>
+                        <h3 className='text-center text-primary'>Login Form</h3>
                         <Formik
                             initialValues={data}
                             enableReinitialize={true}
@@ -95,7 +94,7 @@ const Login = () => {
 
                                         </div>
 
-                                        <div className="">
+                                        <div>
                                             <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                                             <input name='password' type="password" className="form-control" id="exampleInputPassword1" value={props?.values?.password} onChange={props.handleChange} onBlur={props?.handleBlur} />
                                             <span className="login_error_message">  {props?.touched.password && props?.errors.password ? props?.errors?.password : null}</span>

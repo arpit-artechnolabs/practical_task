@@ -13,6 +13,7 @@ const UpdateUser = () => {
 
     const location = useLocation()
     const { id, name, middlename, surname, email, phone, address_line1, address_line2, city, zipcode, state, country, birth_date, gender, hobby } = location?.state?.userData
+    let selcttedHobbies=hobby.split(',')
     const navigate = useNavigate()
     const [userData] = useState({
         "name": name === undefined ? "" : name,
@@ -26,8 +27,8 @@ const UpdateUser = () => {
         "city": city === undefined ? "" : city,
         "zipcode": zipcode === undefined ? "" : zipcode,
         "mobile": phone === undefined ? "" : phone,
-        "gender": "",
-        "hobby": []
+        "gender": gender,
+        "hobby": selcttedHobbies
     })
 
     const phoneRegExp = (/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/);
@@ -80,12 +81,14 @@ const UpdateUser = () => {
     }
 
     const handleSubmitForm = (values) => {
-
+        console.log(values);
         let date = birthDate?.$D
         let month = (birthDate?.$M + 1)
         let year = birthDate?.$y
         const { name, email, middlename, surname, address_line1, address_line2, country, state, city, zipcode, mobile, gender, hobby } = values;
-        let finalHobby = hobby.join(' ')
+        console.log('hobby',hobby);
+        let finalHobby = hobby.join(',')
+        console.log('hello',finalHobby);
 
         let updateUserData = {
             "name": name,
@@ -134,6 +137,8 @@ const UpdateUser = () => {
 
                             {(props) => (
                                 <>
+                                {console.log(props.values.hobby,'ss')}
+                                {console.log('hehfio',props.values.hobby.includes('Cricket'))}
                                     <form onSubmit={props.handleSubmit}>
                                         <div className="mb-3">
                                             <label htmlFor="exampleInputName" className="form-label">Name</label>
@@ -359,6 +364,7 @@ const UpdateUser = () => {
                                                 onChange={props.handleChange}
                                                 onBlur={props.handleBlur}
                                                 name="gender"
+                                                checked={props.values.gender==="Male"}
                                             />
 
 
@@ -373,6 +379,8 @@ const UpdateUser = () => {
                                                 onChange={props.handleChange}
                                                 onBlur={props.handleBlur}
                                                 name="gender"
+                                                checked={props.values.gender==='Female'}
+                                            
                                             />
 
 
@@ -392,6 +400,7 @@ const UpdateUser = () => {
                                                 onChange={props.handleChange}
                                                 onBlur={props.handleBlur}
                                                 name="hobby"
+                                                checked={props.values.hobby.includes('Cricket')}
 
                                             />
 
@@ -407,6 +416,7 @@ const UpdateUser = () => {
                                                 onChange={props.handleChange}
                                                 onBlur={props.handleBlur}
                                                 name="hobby"
+                                                checked={props.values.hobby.includes('Badminton')}
                                             />
                                         </div>
                                         <div className="form-check form-check-inline">
@@ -419,6 +429,7 @@ const UpdateUser = () => {
                                                 onChange={props.handleChange}
                                                 onBlur={props.handleBlur}
                                                 name="hobby"
+                                                checked={props.values.hobby.includes('Singing')}
                                             />
 
                                         </div>
@@ -426,7 +437,7 @@ const UpdateUser = () => {
                                             <div>{props.errors.hobby}</div>
                                         ) : null}</span>
                                         <br />
-                                        <button onClick={() => navigate('/')} className="my-3 mx-2 btn btn-primary">Cancel</button>
+                                        <button onClick={() => navigate('/')} className="my-3 mx-2 btn btn-danger">Cancel</button>
                                         <button type="submit" className="my-3 btn btn-primary">Submit</button>
 
                                     </form>

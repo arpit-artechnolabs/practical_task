@@ -133,7 +133,7 @@ export const passwordChange=async (passwordData)=>{
         
         return res
     } catch (error) {
-        return error
+        throw error
     }
 }
 

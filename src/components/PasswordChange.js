@@ -36,7 +36,7 @@ const PasswordChange = () => {
 
     });
 
-    const handleSubmitForm = async (values) => {
+    const handleSubmitForm = (values) => {
         const {current_password,password,confirm_password}=values
         
         let passwordData={
@@ -46,9 +46,15 @@ const PasswordChange = () => {
         }
         passwordChange(passwordData)
         .then((res) => {
+            if (res?.data?.message==="Invalid current password."){
+                setError('Please enter valid current password.')
+            }
+
+            else{
             console.log(res);
             window.alert('Your password is updated successfully.')
             navigate('/')
+            }
 
         })
         .catch((error) => {
@@ -61,8 +67,10 @@ const PasswordChange = () => {
         <>
             <Navbar />
 
-            <div className='container rounded-2 border border-secondary-subtle my-5'>
-                <h3 className='my-2 col-md-4 text-primary'>Change Password</h3>
+            <div className='container my-5'>
+                <div className='d-flex justify-content-center'>
+                    <div className='rounded-2 border border-secondary-subtle p-3'>
+                <h3 className='my-2 text-primary'>Change Password</h3>
                 <Formik
                     initialValues={data}
                     enableReinitialize={true}
@@ -73,7 +81,7 @@ const PasswordChange = () => {
 
                         <>
                             <form onSubmit={props.handleSubmit} className='my-3'>
-                                <div className="col-md-4 mb-4">
+                                <div className="mb-4">
                                     <label htmlFor="exampleInputCurrentPassword" className="form-label">Current Password</label>
                                     <input name="current_password" type="password" className="form-control" id="exampleInputCurrentPassword" aria-describedby="CurrentPasswordHelp" value={props?.valucurrent_password} onBlur={props?.handleBlur}
                                         onChange={props.handleChange} />
@@ -81,24 +89,26 @@ const PasswordChange = () => {
 
                                 </div>
 
-                                <div className="col-md-4 mb-3">
+                                <div className="mb-3">
                                     <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                                     <input name='password' type="password" className="form-control" ref={passwordRef} id="exampleInputPassword1" value={props?.values?.password} onChange={props.handleChange} onBlur={props?.handleBlur} />
                                     <span className="login_error_message">  {props?.touched.password && props?.errors.password ? props?.errors?.password : null}</span>
                                 </div>
 
-                                <div className="col-md-4 mb-3">
+                                <div className="mb-3">
                                     <label htmlFor="exampleInputConfirmPassword" className="form-label">Confirm Password</label>
                                     <input name='confirm_password' type="password" className="form-control" ref={passwordRef} id="exampleInputConfirmPassword" value={props?.values?.confirm_password} onChange={props.handleChange} onBlur={props?.handleBlur} />
                                     <span className="login_error_message">  {props?.touched.confirm_password && props?.errors.confirm_password ? props?.errors?.confirm_password : null}</span>
                                 </div>
                                 <h6 className="col-md-4 wrong-crednetial-message">{error && error}</h6>
-                                <button className="btn btn-primary mx-2" onClick={()=>navigate('/')}>Cancel</button>
+                                <button className="btn btn-danger mx-2" onClick={()=>navigate('/')}>Cancel</button>
                                 <button type="submit" className="btn btn-primary">Submit</button>
                             </form>
                         </>
                     )}
                 </Formik>
+                </div>
+                </div>
             </div>
         </>
     )
