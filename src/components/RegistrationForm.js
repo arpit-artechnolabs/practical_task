@@ -12,6 +12,7 @@ import { registerUser } from '../services/UserService';
 
 const RegistrationForm = () => {
 
+    const [error,setError]=useState(null)
     const passwordRef = useRef()
     const navigate = useNavigate()
     const [userData] = useState({
@@ -124,11 +125,11 @@ const RegistrationForm = () => {
 
             })
             .catch((error) => {
-                console.log(error);
+                setError(error?.response?.data?.errors?.email[0]);
             })
 
     }
-
+    console.log(error);
     return (
         <>
             <div className='container my-5'>
@@ -474,8 +475,9 @@ const RegistrationForm = () => {
                                         <span className='error_message'> {props.touched.hobby && props.errors.hobby ? (
                                             <div>{props.errors.hobby}</div>
                                         ) : null}</span>
-
-                                        <div className='my-3 text-center'>
+                                        
+                                        <h6 className='my-2 registration_error_message'> {error && error} </h6>
+                                        <div className='my-2 text-center'>
                                             <button type="submit" className=" btn btn-primary">Submit</button>
                                         </div>
                                     </form>

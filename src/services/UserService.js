@@ -13,7 +13,7 @@ export const registerUser=async (registerUserData)=>{
 
         return res
     } catch (error) {
-        return error
+        throw error
     }
 }
 
@@ -28,7 +28,7 @@ export const userLogin=async (loginData)=>{
 
         return res
     } catch (error) {
-        return error
+        throw error
     }
 }
 

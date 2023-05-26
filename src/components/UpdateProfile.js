@@ -98,8 +98,8 @@ const UpdateProfile = () => {
         let date = birthDate?.$D
         let month = (birthDate?.$M + 1)
         let year = birthDate?.$y
-        const { name, email, middlename, surname, address_line1, address_line2, country, state, city, zipcode, mobile, gender, hobby, password, confirm_password } = values;
-        let finalHobby = hobby.join(' ')
+        const { name, email, middlename, surname, address_line1, address_line2, country, state, city, zipcode, mobile, gender, hobby } = values;
+        // let finalHobby = hobby.join(' ')
 
         
 

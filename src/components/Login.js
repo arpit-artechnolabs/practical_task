@@ -34,7 +34,7 @@ const Login = () => {
     });
 
 
-    const handleSubmitForm = async (values) => {
+    const handleSubmitForm =  (values) => {
         const { email, password } = values
 
         const loginData = {
@@ -42,9 +42,9 @@ const Login = () => {
             "password": password
         }
 
-        let res = await userLogin(loginData)
-        console.log(res);
-        if (res.status === 201) {
+        userLogin(loginData)
+        .then((res) => {
+            console.log(res);
             let token = (res?.data?.token);
             let userData = (res?.data?.user);
             encryptStorage1.setItem('token', token)
@@ -53,11 +53,19 @@ const Login = () => {
             setCurrentUser(userData)
             updateToken()
             navigate('/')
-        };
+            
 
-        if (res?.response?.data?.message === "Bad creds") {
-            setError('Please enter valid email id or password.')
-        }
+        })
+        .catch((error) => {
+            console.log(error);
+            if(error?.response?.data?.message==="Bad creds"){
+            setError('Please enter valid email Id or password.')
+            }
+
+            else{
+                setError(error?.response?.data?.message)
+            }
+        })
 
     }
 
@@ -87,7 +95,7 @@ const Login = () => {
 
                                         </div>
 
-                                        <div className="mb-3">
+                                        <div className="">
                                             <label htmlFor="exampleInputPassword1" className="form-label">Password</label>
                                             <input name='password' type="password" className="form-control" id="exampleInputPassword1" value={props?.values?.password} onChange={props.handleChange} onBlur={props?.handleBlur} />
                                             <span className="login_error_message">  {props?.touched.password && props?.errors.password ? props?.errors?.password : null}</span>

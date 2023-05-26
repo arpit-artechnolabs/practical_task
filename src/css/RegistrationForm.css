@@ -1,3 +1,4 @@
-.error_message{
+.error_message,.registration_error_message{
     color: red;
 }
+
