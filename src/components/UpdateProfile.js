@@ -10,6 +10,7 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { selfProfileChange, selfUser } from '../services/UserService';
 import { UserContext } from '../context/Context';
 import { encryptStorage1 } from '../utility/Storage';
+import dayjs from 'dayjs';
 
 
 const UpdateProfile = () => {
@@ -89,10 +90,12 @@ const UpdateProfile = () => {
     })
 
 
-    const [birthDate, setBirthDate] = useState(null)
+    const [birthDate, setBirthDate] = useState('')
     const handleChange = (Date) => {
+        var x = dayjs(Date).format("DD-MM-YYYY");
+        console.log(Date);
+        console.log(x);
         setBirthDate(Date)
-        console.log(Date.$D, Date.$M + 1, Date.$y);
     }
 
     const handleBlur=()=>{
@@ -101,9 +104,15 @@ const UpdateProfile = () => {
 
     const handleSubmitForm = (values) => {
 
+        if(!birthDate){
+            alert('Please enter date of birth.')
+            return
+        }
+
         let date = birthDate?.$D
         let month = (birthDate?.$M + 1)
         let year = birthDate?.$y
+        let DOB=`${date}/${month}/${year}`
         const { name, email, middlename, surname, address_line1, address_line2, country, state, city, zipcode, mobile, gender, hobby } = values;
         console.log(hobby);
         let finalHobby = hobby.join(',')
@@ -120,7 +129,7 @@ const UpdateProfile = () => {
             "city": city,
             "zipcode": zipcode,
             "phone": mobile,
-            "birth_date": `${date} ${month} ${year}`,
+            "birth_date":DOB,
             "gender": gender,
             "hobby": finalHobby
         }
@@ -368,9 +377,7 @@ const UpdateProfile = () => {
                                                     name="birthDate"
                                                     className='my-3'
                                                 />
-                                                {/* <span className='error_message'> {props.touched.birthDate && props.errors.birthDate ? (
-                                            <div>{props.errors.birthDate}</div>
-                                        ) : null}</span> */}
+                                                
                                             </DemoContainer>
                                         </LocalizationProvider>
 

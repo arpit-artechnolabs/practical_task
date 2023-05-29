@@ -12,7 +12,7 @@ import { registerUser } from '../services/UserService';
 
 const RegistrationForm = () => {
 
-    const [error,setError]=useState(null)
+    const [error, setError] = useState(null)
     const passwordRef = useRef()
     const navigate = useNavigate()
     const [userData] = useState({
@@ -87,11 +87,24 @@ const RegistrationForm = () => {
 
     const [birthDate, setBirthDate] = useState(null)
     const handleChange = (Date) => {
+        console.log(Date);
         setBirthDate(Date)
         console.log(Date.$D, Date.$M + 1, Date.$y);
     }
 
+    // const handleValidate=()=>{
+    //     console.log('kl');
+
+    // }
+
     const handleSubmitForm = (values) => {
+
+        if (!birthDate) {
+            alert('Please select date of birth.')
+            return
+        }
+
+
         let date = birthDate?.$D
         let month = (birthDate?.$M + 1)
         let year = birthDate?.$y
@@ -387,13 +400,10 @@ const RegistrationForm = () => {
                                                     label="Select Date of birth"
                                                     value={birthDate}
                                                     onChange={handleChange}
-                                                    // onBlur={props.handleBlur}
+                                                    // onBlur={handleValidate}
                                                     name="birthDate"
                                                     className='col-md-12'
                                                 />
-                                                {/* <span className='error_message'> {props.touched.birthDate && props.errors.birthDate ? (
-                                            <div>{props.errors.birthDate}</div>
-                                        ) : null}</span> */}
                                             </DemoContainer>
                                         </LocalizationProvider>
 
@@ -409,7 +419,7 @@ const RegistrationForm = () => {
                                                 onChange={props.handleChange}
                                                 onBlur={props.handleBlur}
                                                 name="gender"
-                                                
+
                                             />
 
 
@@ -476,7 +486,7 @@ const RegistrationForm = () => {
                                         <span className='error_message'> {props.touched.hobby && props.errors.hobby ? (
                                             <div>{props.errors.hobby}</div>
                                         ) : null}</span>
-                                        
+
                                         <h6 className='my-2 registration_error_message'> {error && error} </h6>
                                         <div className='my-2 text-center'>
                                             <button type="submit" className=" btn btn-primary">Submit</button>
